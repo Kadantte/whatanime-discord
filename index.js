@@ -3,7 +3,8 @@ var request = require('request');
 const Eris = require("eris");
 const config = require("./config.json");
 var popura =  require('popura');
-const mal = popura('', '');
+
+const mal = popura(config.mal_username, config.mal_password);
 
 const wa_url = `https://whatanime.ga/api/search?token=${config.wa_token}`
 
