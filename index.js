@@ -2,6 +2,8 @@ var base64 = require('node-base64-image');
 var request = require('request');
 const Eris = require("eris");
 const config = require("./config.json");
+var popura =  require('popura');
+const mal = popura('', '');
 
 const wa_url = `https://whatanime.ga/api/search?token=${config.wa_token}`
 
@@ -22,27 +24,22 @@ var bot = new Eris.CommandClient(config.d_token, {}, {
     prefix: "!"
 });
 
-bot.on("ready", () => { // When the bot is ready
-    console.log("Ready!"); // Log "Ready!"
+bot.on("ready", () => {
+    console.log("Ready!");
 });
 
-bot.registerCommand("ping", "pong");
+bot.registerCommand("ping", "pong", {description: "Test command"});
 
 bot.registerCommand("whatanime", (msg, args) => {
+    if (msg.attachments.length == 0) { return; }
     var image = msg.attachments[0].url;
 
     return new Promise((resolve, reject) => {
         var options = {string: true};
-        base64.encode(image, options, function (err, image) {
+        base64.encode(image, options, (err, image) => {
             if (err) reject(err);
             resolve(image);
         });
-    })
-
-    .catch((err) => {
-        console.log(err);
-        bot.createMessage(msg.channel.id, "Something went wrong..")
-        return
     })
     
     .then(b64 => {
@@ -54,31 +51,64 @@ bot.registerCommand("whatanime", (msg, args) => {
             });
         })
     })
-
-    .catch((err) => {
-        console.log(err);
-        bot.createMessage(msg.channel.id, "Something went wrong..")
-        return
-    })
     
     .then(resp => {
         // get data from json and send embed
-        data = JSON.parse(resp)["docs"][0];
-        var anime = new Anime(data["title_romaji"], data["title_english"], data["title"], data["episode"]);
+        return new Promise((resolve, reject) => {
+            data = JSON.parse(resp)["docs"][0];
+            var anime = new Anime(data["title_romaji"], data["title_english"], data["title"], data["episode"]);
+            resolve(anime)
+        })
+    })
+
+    .then(anime => {
+        // get MAL link from API using popura
+        return new Promise((resolve, reject) => {
+            mal.searchAnimes(anime.title_english).then(res => {
+                var mal_link = `https://myanimelist.net/anime/${res[0]['id']}`
+                resolve(anime, mal_link)
+            }).catch(err => {
+                reject(err)
+            })
+        })
+    })
+
+    .then((anime, mal_link) => {
         bot.createMessage(msg.channel.id, {
             embed: {
-                author: { name: anime.title_romaji },
+                author: {
+                    name: msg.author.username,
+                    icon_url: msg.author.avatarURL
+                },
+                url: mal_link,
+                title: anime.title_romaji,
                 color: 0xFF0000,
                 fields: [
-                    { name: "English title", value: anime.title_english, inline: true },
+                    { name: "Romaji title", value: anime.title_romaji, inline: true },
                     { name: "Japanese title", value: anime.title_japanese, inline: false },
                     { name: "Episode", value: anime.episode, inline: false },
                 ],
-                footer: { text: "Anime found with whatanime.ga" },
+                footer: { 
+                    text: "Anime found with whatanime.ga",
+                    icon_url: "https://whatanime.ga/favicon.png"
+                },
                 thumbnail: { url: image }
             }
         })
     })
+
+    // crappy error handling
+    .catch((err) => {
+        console.log(err);
+        bot.createMessage(msg.channel.id, "Something went wrong, try again later.")
+        return
+    })
+
+}, {
+    // command info
+    description: "Find the anime of the provided picture (attachment).",
+    usage: "attach an image.",
+    fullDescription: "This command uses whatanime.ga to find which anime your picture is from. To use this correctly type !whatanime and add an image attachment."
 });
 
 bot.connect();

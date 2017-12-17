@@ -6,6 +6,7 @@
   "dependencies": {
     "eris": "^0.8.1",
     "node-base64-image": "^1.0.4",
+    "popura": "^1.2.5",
     "request": "^2.83.0"
   },
   "devDependencies": {},
