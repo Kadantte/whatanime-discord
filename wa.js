@@ -24,7 +24,7 @@ exports.callapi = async function(b64) {
     return await rp(options)
 }
 
-exports.parsejson = async function(json) {
+exports.parsejson = function(json) {
     data = JSON.parse(json)["docs"][0];
     return Anime(data["title_romaji"], data["title_english"], data["title"], data["episode"]);
 }

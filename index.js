@@ -22,7 +22,7 @@ bot.registerCommand("whatanime", async (msg, args) => {
 
     const b64 = await wa.imgtob64(image)
     const json = await wa.callapi(b64)
-    const anime = await wa.parsejson(json)
+    const anime = wa.parsejson(json)
     const mal_link = await wa.getmallink(anime)
 
     bot.createMessage(msg.channel.id, {
