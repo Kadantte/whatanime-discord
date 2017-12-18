@@ -5,9 +5,10 @@
   "main": "index.js",
   "dependencies": {
     "eris": "^0.8.1",
-    "node-base64-image": "^1.0.4",
+    "fetch-base64": "^2.0.0",
     "popura": "^1.2.5",
-    "request": "^2.83.0"
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2"
   },
   "devDependencies": {},
   "scripts": {
