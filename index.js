@@ -6,7 +6,7 @@ const wa = require('./wa.js')
 
 var bot = new Eris.CommandClient(config.d_token, {}, {
     description: "A bot to find out what anime an image is from",
-    owner: "Nopply / StandB",
+    owner: "StandB",
     prefix: "!"
 });
 
