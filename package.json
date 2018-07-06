@@ -6,6 +6,7 @@
   "dependencies": {
     "eris": "^0.8.1",
     "fetch-base64": "^2.0.0",
+    "hoek": "^5.0.3",
     "popura": "^1.2.5",
     "request": "^2.83.0",
     "request-promise": "^4.2.2"
