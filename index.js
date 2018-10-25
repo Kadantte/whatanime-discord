@@ -23,7 +23,6 @@ bot.registerCommand("whatanime", async (msg, args) => {
     const b64 = await wa.imgtob64(image)
     const json = await wa.callapi(b64)
     const anime = wa.parsejson(json)
-    const mal_link = await wa.getmallink(anime)
 
     bot.createMessage(msg.channel.id, {
         embed: {
@@ -31,17 +30,17 @@ bot.registerCommand("whatanime", async (msg, args) => {
                 name: msg.author.username,
                 icon_url: msg.author.avatarURL
             },
-            url: mal_link,
             title: anime.title_romaji,
             color: 0xFF0000,
             fields: [
                 { name: "Romaji title", value: anime.title_romaji, inline: true },
                 { name: "Japanese title", value: anime.title_japanese, inline: false },
                 { name: "Episode", value: anime.episode, inline: false },
+                { name: "At", value: anime.at, inline: true } 
             ],
             footer: { 
-                text: "Anime found with whatanime.ga",
-                icon_url: "https://whatanime.ga/favicon.png"
+                text: "Anime found with trace.moe",
+                icon_url: "https://trace.moe/favicon.png"
             },
             thumbnail: { url: image }
         }
@@ -50,7 +49,7 @@ bot.registerCommand("whatanime", async (msg, args) => {
     // command info
     description: "Find the anime of the provided picture (attachment).",
     usage: "attach an image.",
-    fullDescription: "This command uses whatanime.ga to find which anime your picture is from. To use this correctly type !whatanime and add an image attachment."
+    fullDescription: "This command uses trace.moe to find which anime your picture is from. To use this correctly type !whatanime and add an image attachment."
 });
 
 bot.connect();
