@@ -4,6 +4,7 @@
   "description": "Discord bot to find which anime an image is from",
   "main": "index.js",
   "dependencies": {
+    "anifetch": "^2.1.4",
     "eris": "^0.8.1",
     "fetch-base64": "^2.0.0",
     "hoek": "^5.0.3",

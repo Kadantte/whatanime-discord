@@ -22,7 +22,7 @@ bot.registerCommand("whatanime", async (msg, args) => {
 
     const b64 = await wa.imgtob64(image)
     const json = await wa.callapi(b64)
-    const anime = wa.parsejson(json)
+    const anime = await wa.parsejson(json)
 
     bot.createMessage(msg.channel.id, {
         embed: {
@@ -30,6 +30,7 @@ bot.registerCommand("whatanime", async (msg, args) => {
                 name: msg.author.username,
                 icon_url: msg.author.avatarURL
             },
+            url: anime.link,
             title: anime.title_romaji,
             color: 0xFF0000,
             fields: [
