@@ -1,9 +1,11 @@
 const fetch = require('fetch-base64')
 const rp = require('request-promise')
-const anifetch = require('anifetch');
+const anilist = require('anilist-node');
 
 const config = require("./config.json")
 const wa_url = `https://trace.moe/api/search?token=${config.wa_token}`
+
+const Anilist = new anilist();
 
 const Anime = (title_romaji, title_english, title_japanese, episode, at, link) => {
     return { title_romaji, title_english, title_japanese, episode, at, link }
@@ -24,19 +26,16 @@ exports.callapi = async function(b64) {
 }
 
 getLink = async function(title) {
-    let results = await anifetch.search('anilist', 'anime', title)
-    return results[0]['url']
+    searchResults = await Anilist.search("anime", title, 1, 1)
+    id = searchResults['media'][0]['id']
+    return `https://anilist.co/anime/${id}`
 }
 
-calcTime = async function(s) {
-    let m = data["at"] / 60
-    let ms = Math.round(m) + ":" + Math.round(m % 1 * 60)
-    return ms;
-}
+function fmtTime(s) { return(s-(s%=60))/60+(9<s?':':':0')+s } 
 
 exports.parsejson = async function(json) {
     data = await JSON.parse(json)["docs"][0]
-    at = await calcTime(data["at"])
+    at = await fmtTime(data["at"])
     link = await getLink(data["title_english"])
     return Anime(data["title_romaji"], data["title_english"], data["title"], data["episode"], at, link)
 }
