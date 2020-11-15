@@ -21,9 +21,33 @@ bot.registerCommand("whatanime", async (msg, args) => {
     var image = msg.attachments[0].url;
 
     const b64 = await wa.imgtob64(image)
-    const json = await wa.callapi(b64)
-    const anime = await wa.parsejson(json)
+    var json = {};
+    try {
+        json = await wa.callapi(b64)
+    } catch (e) {
+        bot.createMessage(msg.channel.id, {
+            embed: {
+                author: {
+                    name: msg.author.username,
+                    icon_url: msg.author.avatarURL
+                },
+                title: "Uh oh",
+                color: 0xFF0000,
+                fields: [
+                    { name: "Error", value: "Couldn't reach trace.moe or we have hit rate limits. Try again later!", inline: true },
+                ],
+                footer: { 
+                    text: "Anime found with trace.moe",
+                    icon_url: "https://trace.moe/favicon.png"
+                },
+                thumbnail: { url: image }
+            }
+        })
 
+        return;
+    }
+
+    const anime = await wa.parsejson(json)
     bot.createMessage(msg.channel.id, {
         embed: {
             author: {
