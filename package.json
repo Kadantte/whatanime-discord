@@ -4,13 +4,13 @@
   "description": "Discord bot to find which anime an image is from",
   "main": "index.js",
   "dependencies": {
-    "anilist-node": "^1.6.0",
-    "eris": "^0.8.1",
+    "anilist-node": "^1.6.1",
+    "eris": "^0.8.7",
     "fetch-base64": "^2.0.0",
     "hoek": "^5.0.3",
     "popura": "^1.2.5",
-    "request": "^2.83.0",
-    "request-promise": "^4.2.2"
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6"
   },
   "devDependencies": {},
   "scripts": {

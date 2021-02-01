@@ -2,8 +2,7 @@ const fetch = require('fetch-base64')
 const rp = require('request-promise')
 const anilist = require('anilist-node');
 
-const config = require("./config.json")
-const wa_url = `https://trace.moe/api/search?token=${config.wa_token}`
+const wa_url = 'https://trace.moe/api/search'
 
 const Anilist = new anilist();
 

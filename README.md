@@ -8,7 +8,7 @@ Clone the repo.
 
 Run `npm install`
 
-Fill in the required tokens in `config.js`
+Fill in the required discord token in `config.js`
 
 Then run `npm start`
 
