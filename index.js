@@ -14,8 +14,6 @@ bot.on("ready", () => {
     console.log("Ready!");
 });
 
-bot.registerCommand("ping", "pong", {description: "Test command"});
-
 bot.registerCommand("whatanime", async (msg, args) => {
     if (msg.attachments.length == 0) { return; }
     var image = msg.attachments[0].url;

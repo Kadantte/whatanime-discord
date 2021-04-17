@@ -30,7 +30,7 @@ getLink = async function(title) {
     return `https://anilist.co/anime/${id}`
 }
 
-function fmtTime(s) { return(s-(s%=60))/60+(9<s?':':':0')+s } 
+function fmtTime(s) { return(s-(s%=60))/60+(9<s?':':':0')+Math.round(s)} 
 
 exports.parsejson = async function(json) {
     data = await JSON.parse(json)["docs"][0]
