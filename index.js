@@ -1,8 +1,8 @@
 const Eris = require("eris");
 const config = require("./config.json");
 
-// whatanime functionality
-const wa = require('./wa.js')
+// trace.moe functionality
+const trace = require('./trace.js')
 
 var bot = new Eris.CommandClient(config.d_token, {}, {
     description: "A bot to find out what anime an image is from",
@@ -18,10 +18,9 @@ bot.registerCommand("whatanime", async (msg, args) => {
     if (msg.attachments.length == 0) { return; }
     var image = msg.attachments[0].url;
 
-    const b64 = await wa.imgtob64(image)
     var json = {};
     try {
-        json = await wa.callapi(b64)
+        json = await trace.callapi(image)
     } catch (e) {
         bot.createMessage(msg.channel.id, {
             embed: {
@@ -45,7 +44,7 @@ bot.registerCommand("whatanime", async (msg, args) => {
         return;
     }
 
-    const anime = await wa.parsejson(json)
+    const anime = await trace.parsejson(json)
     bot.createMessage(msg.channel.id, {
         embed: {
             author: {
